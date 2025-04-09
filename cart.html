@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Shopping Cart - FoodMunch</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FF7A00;
+            --secondary-color: #004d40;
+            --accent-color: #FFC107;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --white: #ffffff;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --border-radius: 10px;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+        
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 5%;
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-box {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-box i {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-right: 15px;
+        }
+        
+        .brand-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        
+        .brand-name span {
+            color: var(--primary-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: var(--white);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 30px;
+            font-size: 32px;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        h1:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary-color);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .cart-empty {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+        }
+        
+        .cart-items {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .cart-items th,
+        .cart-items td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .cart-items th {
+            background-color: #f2f2f2;
+            font-weight: 600;
+        }
+        
+        .cart-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .item-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .item-description {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            background-color: var(--light-bg);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .quantity-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .quantity-input {
+            width: 45px;
+            height: 32px;
+            text-align: center;
+            margin: 0 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .remove-btn {
+            background-color: #ff4136;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .remove-btn:hover {
+            background-color: #dc2f26;
+            transform: translateY(-2px);
+        }
+        
+        .summary {
+            margin-top: 30px;
+            padding: 25px;
+            background-color: var(--light-bg);
+            border-radius: var(--border-radius);
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .summary-total {
+            font-weight: 700;
+            font-size: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+        
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: var(--transition);
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .checkout-btn:hover {
+            background-color: #e66c00;
+            transform: translateY(-2px);
+        }
+        
+        .continue-shopping {
+            display: inline-block;
+            padding: 10px 20px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            border-radius: 30px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .continue-shopping:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+        
+        .cart-empty .continue-shopping {
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .cart-items th:nth-child(2),
+            .cart-items td:nth-child(2) {
+                display: none;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header .continue-shopping {
+                margin-top: 15px;
+                align-self: flex-start;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .cart-items {
+                font-size: 14px;
+            }
+            
+            .cart-items th,
+            .cart-items td {
+                padding: 10px;
+            }
+            
+            .item-name {
+                font-size: 14px;
+            }
+            
+            .item-description {
+                font-size: 12px;
+            }
+            
+            .quantity-btn,
+            .quantity-input {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .remove-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <div class="logo-box">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <div class="brand-name">Food<span>Munch</span></div>
+        </div>
+        <a href="res1.html" class="continue-shopping"><i class="fas fa-arrow-left"></i> Continue Shopping</a>
+    </div>
+
+    <div class="container">
+        <h1>Your Shopping Cart</h1>
+        
+        <div id="cart-content">
+            <!-- Cart items will be displayed here -->
+        </div>
+        
+        <div id="cart-summary" class="summary" style="display: none;">
+            <div class="summary-row">
+                <span>Subtotal:</span>
+                <span id="subtotal">₹0.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Delivery:</span>
+                <span id="delivery">₹40.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Tax (5%):</span>
+                <span id="tax">₹0.00</span>
+            </div>
+            <div class="summary-row summary-total">
+                <span>Total:</span>
+                <span id="total">₹0.00</span>
+            </div>
+            <a href="temp.html" class="checkout-btn"><i class="fas fa-shopping-bag"></i> Proceed to Checkout</a>
+        </div>
+    </div>
+
+    <script>
+        // Function to retrieve cart data from localStorage
+        function getCartItems() {
+            const cartData = localStorage.getItem('foodMunchCart');
+            return cartData ? JSON.parse(cartData) : [];
+        }
+
+        // Function to save cart data to localStorage
+        function saveCartItems(items) {
+            localStorage.setItem('foodMunchCart', JSON.stringify(items));
+        }
+
+        // Function to update the cart display
+        function updateCartDisplay() {
+            const cartItems = getCartItems();
+            const cartContent = document.getElementById('cart-content');
+            const cartSummary = document.getElementById('cart-summary');
+            
+            if (cartItems.length === 0) {
+                cartContent.innerHTML = `
+                    <div class="cart-empty">
+                        <h3>Your cart is empty</h3>
+                        <p>Looks like you haven't added any items to your cart yet.</p>
+                        <a href="res1.html" class="continue-shopping"><i class="fas fa-utensils"></i> Continue Shopping</a>
+                    </div>
+                `;
+                cartSummary.style.display = 'none';
+            } else {
+                let tableHTML = `
+                    <table class="cart-items">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                let subtotal = 0;
+                
+                cartItems.forEach((item, index) => {
+                    const itemTotal = item.price * item.quantity;
+                    subtotal += itemTotal;
+                    
+                    tableHTML += `
+                        <tr>
+                            <td>
+                                <div class="cart-item">
+                                    <div>
+                                        <div class="item-name">${item.name}</div>
+                                        <div class="item-description">${item.description}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>₹${item.price.toFixed(2)}</td>
+                            <td>
+                                <div class="quantity-control">
+                                    <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</button>
+                                    <input type="number" class="quantity-input" value="${item.quantity}" min="1" onchange="updateQuantityInput(${index}, this.value)">
+                                    <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                                </div>
+                            </td>
+                            <td>₹${itemTotal.toFixed(2)}</td>
+                            <td>
+                                <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                tableHTML += `
+                        </tbody>
+                    </table>
+                `;
+                
+                cartContent.innerHTML = tableHTML;
+                cartSummary.style.display = 'block';
+                
+                // Update summary calculations
+                const tax = subtotal * 0.05;
+                const delivery = 40; // Fixed delivery charge
+                const total = subtotal + tax + delivery;
+                
+                document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+                document.getElementById('tax').textContent = `₹${tax.toFixed(2)}`;
+                document.getElementById('total').textContent = `₹${total.toFixed(2)}`;
+            }
+        }
+
+        // Function to update item quantity
+        function updateQuantity(index, change) {
+            const cartItems = getCartItems();
+            cartItems[index].quantity = Math.max(1, cartItems[index].quantity + change);
+            saveCartItems(cartItems);
+            updateCartDisplay();
+        }
+
+        // Function to update quantity from input field
+        function updateQuantityInput(index, value) {
+            const quantity = parseInt(value) || 1;
+            const cartItems = getCartItems();
+            cartItems[index].quantity = Math.max(1, quantity);
+            saveCartItems(cartItems);
+            updateCartDisplay();
+        }
+
+        // Function to remove item from cart
+        function removeItem(index) {
+            const cartItems = getCartItems();
+            cartItems.splice(index, 1);
+            saveCartItems(cartItems);
+            updateCartDisplay();
+        }
+
+        // Initialize the cart display when the page loads
+        window.onload = function() {
+            updateCartDisplay();
+        };
+    </script>
+</body>
+</html>

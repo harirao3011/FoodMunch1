@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - FoodMunch</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FF7A00;
+            --secondary-color: #004d40;
+            --accent-color: #FFC107;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --white: #ffffff;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --border-radius: 10px;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+        
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 5%;
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-box {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-box i {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-right: 15px;
+        }
+        
+        .brand-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        
+        .brand-name span {
+            color: var(--primary-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: var(--white);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 30px;
+            font-size: 32px;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        h1:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary-color);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .checkout-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .checkout-form {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .order-summary {
+            flex: 0 0 350px;
+            background-color: var(--light-bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-section h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            color: var(--primary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .summary-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .summary-items {
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .item-details {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-weight: 500;
+        }
+        
+        .item-price {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .item-quantity {
+            font-size: 14px;
+            color: #666;
+            margin-top: 2px;
+        }
+        
+        .item-total {
+            font-weight: 600;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .summary-total {
+            font-weight: 700;
+            font-size: 18px;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+        
+        .place-order-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .place-order-btn:hover {
+            background-color: #e66c00;
+            transform: translateY(-2px);
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-color);
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .back-btn i {
+            margin-right: 8px;
+        }
+        
+        .back-btn:hover {
+            color: var(--primary-color);
+        }
+        
+        .payment-methods {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-method.active {
+            border-color: var(--primary-color);
+            background-color: rgba(255, 122, 0, 0.05);
+        }
+        
+        .payment-method input {
+            margin-right: 8px;
+        }
+        
+        .payment-icon {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        /* Payment Details Sections */
+        .payment-details {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        
+        .payment-details.active {
+            display: block;
+        }
+
+        /* Payment Success Page */
+        .success-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .success-icon {
+            font-size: 80px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        
+        .success-message {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .success-details {
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .success-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .success-btn:hover {
+            background-color: #e66c00;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .checkout-container {
+                flex-direction: column;
+            }
+            
+            .order-summary {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <div class="logo-box">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <div class="brand-name">Food<span>Munch</span></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <a href="cart.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Cart</a>
+        <h1>Checkout</h1>
+        
+        <div class="checkout-container">
+            <div class="checkout-form">
+                <form id="checkoutForm">
+                    <div class="form-section">
+                        <h2>Contact Information</h2>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Delivery Address</h2>
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="landmark">Landmark (Optional)</label>
+                            <input type="text" id="landmark" class="form-control">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pincode">Pincode</label>
+                                <input type="text" id="pincode" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Payment Method</h2>
+                        <div class="payment-methods">
+                            <label class="payment-method active" id="cashMethod">
+                                <input type="radio" name="paymentMethod" value="cash" checked>
+                                <i class="fas fa-money-bill-wave payment-icon"></i>
+                                Cash on Delivery
+                            </label>
+                            <label class="payment-method" id="cardMethod">
+                                <input type="radio" name="paymentMethod" value="card">
+                                <i class="fas fa-credit-card payment-icon"></i>
+                                Credit/Debit Card
+                            </label>
+                            <label class="payment-method" id="upiMethod">
+                                <input type="radio" name="paymentMethod" value="upi">
+                                <i class="fas fa-mobile-alt payment-icon"></i>
+                                UPI
+                            </label>
+                        </div>
+
+                        <!-- Card Payment Details -->
+                        <div id="cardDetails" class="payment-details">
+                            <div class="form-group">
+                                <label for="cardNumber">Card Number</label>
+                                <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expiryDate">Expiry Date</label>
+                                    <input type="text" id="expiryDate" class="form-control" placeholder="MM/YY">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cvv">CVV</label>
+                                    <input type="text" id="cvv" class="form-control" placeholder="123">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="nameOnCard">Name on Card</label>
+                                <input type="text" id="nameOnCard" class="form-control">
+                            </div>
+                        </div>
+
+                        <!-- UPI Payment Details -->
+                        <div id="upiDetails" class="payment-details">
+                            <div class="form-group">
+                                <label for="upiId">UPI ID</label>
+                                <input type="text" id="upiId" class="form-control" placeholder="name@upi">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="place-order-btn">
+                        <i class="fas fa-check-circle"></i> Place Order
+                    </button>
+                </form>
+            </div>
+            
+            <div class="order-summary">
+                <h2 class="summary-title">Order Summary</h2>
+                <div id="summary-items" class="summary-items">
+                    <!-- Order items will be displayed here -->
+                </div>
+                <div class="summary-totals">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="summary-subtotal">₹0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery:</span>
+                        <span id="summary-delivery">₹40.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (5%):</span>
+                        <span id="summary-tax">₹0.00</span>
+                    </div>
+                    <div class="summary-row summary-total">
+                        <span>Total:</span>
+                        <span id="summary-total">₹0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Success Page HTML (initially hidden) -->
+    <div id="orderSuccessPage" style="display: none;">
+        <div class="header">
+            <div class="logo-container">
+                <div class="logo-box">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <div class="brand-name">Food<span>Munch</span></div>
+            </div>
+        </div>
+
+        <div class="container success-container">
+            <i class="fas fa-check-circle success-icon"></i>
+            <h1 class="success-message">Order Placed Successfully!</h1>
+            <p class="success-details">
+                Thank you for ordering with FoodMunch. Your delicious food is on its way!
+                <br>
+                <span id="paymentModeText"></span>
+            </p>
+            <div id="orderDetails">
+                <!-- Order details will be displayed here -->
+            </div>
+            <a href="res1.html" class="success-btn">Return to Home</a>
+        </div>
+    </div>
+
+    <script>
+        // Function to retrieve cart data from localStorage
+        function getCartItems() {
+            const cartData = localStorage.getItem('foodMunchCart');
+            return cartData ? JSON.parse(cartData) : [];
+        }
+
+        // Function to display order summary
+        function displayOrderSummary() {
+            const cartItems = getCartItems();
+            const summaryItemsContainer = document.getElementById('summary-items');
+            
+            if (cartItems.length === 0) {
+                window.location.href = 'cart.html'; // Redirect to cart if empty
+                return;
+            }
+            
+            let summaryHTML = '';
+            let subtotal = 0;
+            
+            cartItems.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
+                summaryHTML += `
+                    <div class="summary-item">
+                        <div class="item-details">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">₹${item.price.toFixed(2)}</div>
+                            <div class="item-quantity">Qty: ${item.quantity}</div>
+                        </div>
+                        <div class="item-total">₹${itemTotal.toFixed(2)}</div>
+                    </div>
+                `;
+            });
+            
+            summaryItemsContainer.innerHTML = summaryHTML;
+            
+            // Calculate and display totals
+            const tax = subtotal * 0.05;
+            const delivery = 40; // Fixed delivery charge
+            const total = subtotal + tax + delivery;
+            
+            document.getElementById('summary-subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+            document.getElementById('summary-tax').textContent = `₹${tax.toFixed(2)}`;
+            document.getElementById('summary-total').textContent = `₹${total.toFixed(2)}`;
+        }
+
+        // Handle payment method selection
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', function() {
+                // Remove active class from all payment methods
+                document.querySelectorAll('.payment-method').forEach(m => {
+                    m.classList.remove('active');
+                });
+                
+                // Add active class to selected method
+                this.classList.add('active');
+                
+                // Ensure radio button is checked
+                const radio = this.querySelector('input[type="radio"]');
+                radio.checked = true;
+
+                // Hide all payment details sections
+                document.querySelectorAll('.payment-details').forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                // Show the relevant payment details section
+                const paymentMethod = radio.value;
+                if (paymentMethod === 'card') {
+                    document.getElementById('cardDetails').classList.add('active');
+                } else if (paymentMethod === 'upi') {
+                    document.getElementById('upiDetails').classList.add('active');
+                }
+            });
+        });
+
+        // Function to show order success page
+        function showOrderSuccessPage(formData) {
+            // Hide checkout page
+            document.querySelector('.container').style.display = 'none';
+            
+            // Set payment method text
+            let paymentText = '';
+            switch(formData.paymentMethod) {
+                case 'cash':
+                    paymentText = 'You will pay ₹' + formData.orderTotal + ' in cash upon delivery.';
+                    break;
+                case 'card':
+                    paymentText = 'Payment of ' + formData.orderTotal + ' has been processed successfully via card.';
+                    break;
+                case 'upi':
+                    paymentText = 'Payment of ' + formData.orderTotal + ' has been processed successfully via UPI.';
+                    break;
+            }
+            document.getElementById('paymentModeText').textContent = paymentText;
+            
+            // Show success page
+            document.getElementById('orderSuccessPage').style.display = 'block';
+            
+            // Create order details HTML
+            let orderDetailsHTML = `
+                <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; text-align: left; max-width: 500px; margin: 0 auto;">
+                    <h3 style="margin-bottom: 10px; color: var(--primary-color);">Order Details</h3>
+                    <p><strong>Order ID:</strong> FM${Math.floor(Math.random() * 10000)}</p>
+                    <p><strong>Delivering to:</strong> ${formData.deliveryAddress.fullName}</p>
+                    <p><strong>Address:</strong> ${formData.deliveryAddress.address}, ${formData.deliveryAddress.city} - ${formData.deliveryAddress.pincode}</p>
+                    <p><strong>Estimated Delivery:</strong> 30-45 minutes</p>
+                </div>
+            `;
+            document.getElementById('orderDetails').innerHTML = orderDetailsHTML;
+        }
+
+        // Handle form submission
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            
+            // Check if card or UPI details are required and provided
+            if (paymentMethod === 'card') {
+                const cardNumber = document.getElementById('cardNumber').value;
+                const expiryDate = document.getElementById('expiryDate').value;
+                const cvv = document.getElementById('cvv').value;
+                
+                if (!cardNumber || !expiryDate || !cvv) {
+                    alert('Please fill in all card details');
+                    return;
+                }
+            } else if (paymentMethod === 'upi') {
+                const upiId = document.getElementById('upiId').value;
+                
+                if (!upiId) {
+                    alert('Please enter your UPI ID');
+                    return;
+                }
+            }
+            
+            // Collect form data
+            const formData = {
+                contactInfo: {
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value
+                },
+                deliveryAddress: {
+                    fullName: document.getElementById('fullName').value,
+                    address: document.getElementById('address').value,
+                    landmark: document.getElementById('landmark').value,
+                    city: document.getElementById('city').value,
+                    pincode: document.getElementById('pincode').value
+                },
+                paymentMethod: paymentMethod,
+                orderItems: getCartItems(),
+                orderTotal: document.getElementById('summary-total').textContent
+            };
+            
+            // Save order details to localStorage
+            localStorage.setItem('foodMunchLatestOrder', JSON.stringify(formData));
+            
+            // Clear cart
+            localStorage.removeItem('foodMunchCart');
+            
+            // Show order success page
+            showOrderSuccessPage(formData);
+        });
+
+        // Initialize the order summary when the page loads
+        window.onload = function() {
+            displayOrderSummary();
+        };
+    </script>
+</body>
+</html>

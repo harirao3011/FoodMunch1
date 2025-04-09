@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biryanis - FoodMunch</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FF7A00;
+            --secondary-color: #004d40;
+            --accent-color: #FFC107;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --white: #ffffff;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --border-radius: 10px;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+        
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            line-height: 1.6;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 5%;
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        
+        .header h1 span {
+            color: var(--primary-color);
+        }
+        
+        .cart-btn {
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .cart-btn:hover {
+            background-color: #e66c00;
+            transform: translateY(-2px);
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+        
+        .item {
+            background: var(--white);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .item h3 {
+            font-size: 20px;
+            margin: 15px 0;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+        
+        .item p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .price {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 15px 0;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            font-size: 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background-color: #e66c00;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .cart-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1000;
+        }
+        
+        /* Back button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+            padding: 0 5%;
+        }
+        
+        .back-btn:hover {
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Food<span>Munch</span> Biryanis</h1>
+        <a href="cart.html" class="cart-btn">
+            <i class="fas fa-shopping-cart"></i> View Cart (<span id="cart-count">0</span>)
+        </a>
+    </div>
+    
+    <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back to Menu
+    </a>
+    
+    <div id="notification" class="cart-notification">
+        <i class="fas fa-check-circle"></i> Item added to cart!
+    </div>
+    
+    <div class="container" id="biryanis-container">
+        <!-- Items will be dynamically inserted here -->
+    </div>
+
+    <script>
+        // Biryani menu items with prices
+        let biryanis = [
+            { name: "Chicken Biryani", price: 280 },
+            { name: "Mutton Biryani", price: 350 },
+            { name: "Hyderabadi Biryani", price: 320 },
+            { name: "Dum Biryani", price: 300 },
+            { name: "Vegetable Biryani", price: 220 },
+            { name: "Egg Biryani", price: 240 },
+            { name: "Prawn Biryani", price: 380 },
+            { name: "Fish Biryani", price: 360 },
+            { name: "Kolkata Biryani", price: 290 },
+            { name: "Lucknowi Biryani", price: 310 },
+            { name: "Ambur Biryani", price: 300 },
+            { name: "Kashmiri Biryani", price: 320 },
+            { name: "Paneer Biryani", price: 260 },
+            { name: "Beef Biryani", price: 340 },
+            { name: "Sindhi Biryani", price: 310 },
+            { name: "Chettinad Biryani", price: 330 }
+        ];
+        
+        // Function to generate the menu items
+        function displayMenuItems() {
+            const container = document.getElementById('biryanis-container');
+            let html = '';
+            
+            biryanis.forEach((biryani, index) => {
+                html += `
+                    <div class="item">
+                        <h3>${biryani.name}</h3>
+                        <p>Flavorful ${biryani.name} packed with aromatic spices.</p>
+                        <div class="price">₹${biryani.price.toFixed(2)}</div>
+                        <div class="buttons">
+                            <button class="btn btn-primary" onclick="addToCart(${index})">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-outline">
+                                <i class="fas fa-book"></i> View Recipe
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // Function to retrieve cart items from localStorage
+        function getCartItems() {
+            const cartData = localStorage.getItem('foodMunchCart');
+            return cartData ? JSON.parse(cartData) : [];
+        }
+        
+        // Function to save cart items to localStorage
+        function saveCartItems(items) {
+            localStorage.setItem('foodMunchCart', JSON.stringify(items));
+        }
+        
+        // Function to add item to cart
+        function addToCart(index) {
+            const biryani = biryanis[index];
+            const cartItems = getCartItems();
+            
+            // Check if item already exists in cart
+            const existingItemIndex = cartItems.findIndex(item => item.name === biryani.name);
+            
+            if (existingItemIndex !== -1) {
+                // Increment quantity if item already exists
+                cartItems[existingItemIndex].quantity += 1;
+            } else {
+                // Add new item to cart
+                cartItems.push({
+                    name: biryani.name,
+                    description: `Flavorful ${biryani.name} packed with aromatic spices.`,
+                    price: biryani.price,
+                    quantity: 1
+                });
+            }
+            
+            // Save updated cart
+            saveCartItems(cartItems);
+            
+            // Update cart count display
+            updateCartCount();
+            
+            // Show notification
+            showNotification();
+        }
+        
+        // Function to update the cart count display
+        function updateCartCount() {
+            const cartItems = getCartItems();
+            const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+        }
+        
+        // Function to show notification
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.style.display = 'block';
+            
+            // Hide notification after 2 seconds
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 2000);
+        }
+        
+        // Initialize page
+        window.onload = function() {
+            displayMenuItems();
+            updateCartCount();
+        };
+    </script>
+</body>
+</html>

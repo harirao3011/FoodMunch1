@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodMunch - Login/Signup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FF7A00;
+            --secondary-color: #004d40;
+            --accent-color: #FFC107;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --white: #ffffff;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --border-radius: 10px;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--light-bg);
+            color: var(--text-color);
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-box {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-box i {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-right: 15px;
+        }
+        
+        .brand-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        
+        .brand-name span {
+            color: var(--primary-color);
+        }
+
+        .app-container {
+            position: relative;
+            max-width: 1000px;
+            width: 90%;
+            height: 600px;
+            display: flex;
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            border-radius: var(--border-radius);
+        }
+
+        .panel {
+            position: relative;
+            flex: 1;
+            background: var(--white);
+            padding: 40px;
+            z-index: 5;
+            transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        .panel.form-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .panel.image-panel {
+            background: linear-gradient(135deg, #FF9A40, #FF7A00);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            overflow: hidden;
+        }
+
+        .image-panel-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+        }
+
+        .panel.image-panel h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: var(--white);
+        }
+
+        .panel.image-panel p {
+            color: var(--white);
+            margin-bottom: 25px;
+        }
+
+        .app-container.register-active .form-panel {
+            transform: translateX(100%);
+        }
+
+        .app-container.register-active .image-panel {
+            transform: translateX(-100%);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            position: relative;
+            color: var(--text-color);
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 40px;
+            height: 3px;
+            background: var(--primary-color);
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 350px;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.5s ease-in-out;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .login-form {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+            transition-delay: 0.3s;
+        }
+
+        .app-container.register-active .login-form {
+            opacity: 0;
+            transform: translateX(-30px);
+            pointer-events: none;
+            transition-delay: 0s;
+        }
+
+        .register-form {
+            opacity: 0;
+            transform: translateX(30px);
+            pointer-events: none;
+        }
+
+        .app-container.register-active .register-form {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+            transition-delay: 0.3s;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+            color: var(--text-color);
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-bottom-color: var(--primary-color);
+        }
+
+        .input-group label {
+            position: absolute;
+            top: 12px;
+            left: 0;
+            pointer-events: none;
+            font-size: 16px;
+            color: rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus + label,
+        .input-group input:valid + label {
+            top: -20px;
+            font-size: 12px;
+            color: var(--primary-color);
+        }
+
+        .input-group i {
+            position: absolute;
+            right: 0;
+            top: 15px;
+            color: rgba(0, 0, 0, 0.4);
+        }
+
+        .forgot-link {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .forgot-link a {
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 14px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .forgot-link a:hover {
+            color: var(--primary-color);
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: #e66c00;
+            transform: translateY(-2px);
+        }
+
+        .social-text {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .social-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-icon {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: #555;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: rgba(255, 122, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .toggle-button {
+            background-color: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+            border-radius: 30px;
+            padding: 10px 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .toggle-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        @media screen and (max-width: 768px) {
+            .app-container {
+                flex-direction: column-reverse;
+                height: auto;
+            }
+
+            .panel {
+                flex: none;
+                height: 50vh;
+            }
+
+            .panel.image-panel {
+                height: 30vh;
+            }
+
+            .app-container.register-active .form-panel {
+                transform: translateY(100%);
+            }
+
+            .app-container.register-active .image-panel {
+                transform: translateY(-100%);
+            }
+
+            .panel.form-panel {
+                align-items: center;
+                padding: 30px 20px;
+            }
+
+            .form-container {
+                max-width: 100%;
+            }
+
+            .login-form,
+            .register-form {
+                transform: translateY(-30px);
+            }
+
+            .app-container.register-active .login-form {
+                transform: translateY(-30px);
+            }
+
+            .register-form {
+                transform: translateY(30px);
+            }
+
+            .app-container.register-active .register-form {
+                transform: translateY(0);
+            }
+
+            .logo-container {
+                top: 10px;
+                left: 10px;
+            }
+            
+            .logo-box i {
+                font-size: 24px;
+            }
+            
+            .brand-name {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <div class="logo-box">
+            <i class="fas fa-utensils"></i>
+        </div>
+        <div class="brand-name">Food<span>Munch</span></div>
+    </div>
+    
+    <div class="app-container">
+        <div class="panel form-panel">
+            <div class="form-container login-form">
+                <h1>Welcome to FoodMunch</h1>
+                <form action="res1.html">
+                    <div class="input-group">
+                        <input type="text" required>
+                        <label>Username</label>
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" required>
+                        <label>Password</label>
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="forgot-link">
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn"><i class="fas fa-sign-in-alt"></i> SIGN IN</button>
+
+                    <div class="social-text">Or connect with</div>
+                    <div class="social-container">
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-google"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <div class="form-container register-form">
+                <h1>Create Account</h1>
+                <form action="res1.html">
+                    <div class="input-group">
+                        <input type="text" required>
+                        <label>Full Name</label>
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" required>
+                        <label>Email</label>
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" required>
+                        <label>Password</label>
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" required>
+                        <label>Confirm Password</label>
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <button type="submit" class="btn"><i class="fas fa-user-plus"></i> CREATE ACCOUNT</button>
+
+                    <div class="social-text">Or register with</div>
+                    <div class="social-container">
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-google"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="panel image-panel">
+            <div class="image-panel-content">
+                <h2 id="panel-title">New to FoodMunch?</h2>
+                <p id="panel-text">Sign up and discover delicious food options near you!</p>
+                <button class="toggle-button" id="toggle-btn">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const container = document.querySelector('.app-container');
+        const toggleBtn = document.getElementById('toggle-btn');
+        const panelTitle = document.getElementById('panel-title');
+        const panelText = document.getElementById('panel-text');
+
+        toggleBtn.addEventListener('click', () => {
+            container.classList.toggle('register-active');
+            
+            if (container.classList.contains('register-active')) {
+                toggleBtn.textContent = 'Sign In';
+                panelTitle.textContent = 'Already a FoodMunch member?';
+                panelText.textContent = 'Log in to access your favorite restaurants and order history';
+            } else {
+                toggleBtn.textContent = 'Sign Up';
+                panelTitle.textContent = 'New to FoodMunch?';
+                panelText.textContent = 'Sign up and discover delicious food options near you!';
+            }
+        });
+    </script>
+</body>
+</html>
